@@ -9,12 +9,10 @@ export class CreateUserUseCase {
   async execute(
     createUserDtoInput: CreateUserDtoInput,
   ): Promise<Result<User, { username?: string; email?: string } | string>> {
-    const userExistsByUsername = await this.userRepo.findByUsername(
-      createUserDtoInput.username,
-    );
-    const userExistsByEmail = await this.userRepo.findByEmail(
-      createUserDtoInput.email,
-    );
+    const [userExistsByUsername, userExistsByEmail] = await Promise.all([
+      this.userRepo.findByUsername(createUserDtoInput.username),
+      this.userRepo.findByEmail(createUserDtoInput.email),
+    ]);
     if (userExistsByUsername || userExistsByEmail)
       return Result.fail('Identifiants incorrects.');
 
