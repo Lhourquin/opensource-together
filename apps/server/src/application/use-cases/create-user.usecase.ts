@@ -6,27 +6,31 @@ import { User } from '@domain/user/user.entity';
 export class CreateUserUseCase {
   constructor(private readonly userRepo: UserRepositoryPort) {}
 
-  async execute(createUserDtoInput: CreateUserDtoInput): Promise<Result<User>> {
+  async execute(
+    createUserDtoInput: CreateUserDtoInput,
+  ): Promise<Result<User, { username?: string; email?: string } | string>> {
     const userExistsByUsername = await this.userRepo.findByUsername(
       createUserDtoInput.username,
     );
     const userExistsByEmail = await this.userRepo.findByEmail(
       createUserDtoInput.email,
     );
-    if (userExistsByUsername || userExistsByEmail) {
+    if (userExistsByUsername || userExistsByEmail)
       return Result.fail('Identifiants incorrects.');
-    }
 
-    const user = UserFactory.create(
-      createUserDtoInput.id,
-      createUserDtoInput.username,
-      createUserDtoInput.email,
-    );
+    const user: Result<User, { username?: string; email?: string } | string> =
+      UserFactory.create(
+        createUserDtoInput.id,
+        createUserDtoInput.username,
+        createUserDtoInput.email,
+      );
     if (!user.success) return Result.fail(user.error);
-    const savedUser = await this.userRepo.save(user.value);
-    if (!savedUser)
-      return Result.fail("Erreur lors de la création de l'utilisateur.");
+    const savedUser: Result<
+      User,
+      { username?: string; email?: string } | string
+    > = await this.userRepo.save(user.value);
+    if (!savedUser.success) return Result.fail(savedUser.error);
 
-    return Result.ok(savedUser);
+    return Result.ok(savedUser.value);
   }
 }

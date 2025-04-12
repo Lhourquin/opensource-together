@@ -4,11 +4,13 @@ export class Username {
 
   static create(username: string): Result<Username> {
     if (username.length < 3) {
-      return Result.fail('Username must be at least 3 characters long');
+      return Result.fail(
+        "Le nom d'utilisateur doit comporter au moins 3 caractères",
+      );
     }
     if (!username.match(/^[a-z0-9_-]+$/)) {
       return Result.fail(
-        'Username must contain only alphanumeric, underscore or hyphen characters.',
+        "Le nom d'utilisateur ne peut contenir que des caractères alphanumériques, des traits de soulignement ou des traits d'union.",
       );
     }
 
