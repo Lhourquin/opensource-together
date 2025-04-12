@@ -27,7 +27,11 @@ export class CreateUserUseCase {
       User,
       { username?: string; email?: string } | string
     > = await this.userRepo.save(user.value);
-    if (!savedUser.success) return Result.fail(savedUser.error);
+    if (!savedUser.success)
+      //TODO: faire un mapping des erreurs ?
+      return Result.fail(
+        "Erreur technique lors de la création de l'utilisateur.",
+      );
 
     return Result.ok(savedUser.value);
   }
