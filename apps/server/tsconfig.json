@@ -15,7 +15,8 @@
       "@application/*": ["./src/application/*"],
       "@domain/*": ["./src/domain/*"],
       "@infrastructures/*": ["./src/infrastructures/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@presentation/*": ["./src/presentation/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

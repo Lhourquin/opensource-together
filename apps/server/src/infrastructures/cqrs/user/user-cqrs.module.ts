@@ -4,7 +4,6 @@ import { userUsecaseHandlersContainer } from './use-case-handlers/user-usecase.h
 import { PrismaUserRepository } from '@infrastructures/repositories/prisma.user.repository';
 import { USER_REPOSITORY_PORT } from '@application/ports/user.repository.port';
 import { RepositoryModule } from '@infrastructures/repositories/repository.module';
-
 @Module({
   imports: [RepositoryModule],
   providers: [
@@ -15,6 +14,6 @@ import { RepositoryModule } from '@infrastructures/repositories/repository.modul
     ...userHandlerContainer,
     ...userUsecaseHandlersContainer,
   ],
-  exports: [],
+  exports: [...userHandlerContainer, ...userUsecaseHandlersContainer],
 })
 export class UserCqrsModule {}
