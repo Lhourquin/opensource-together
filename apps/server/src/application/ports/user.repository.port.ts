@@ -7,4 +7,5 @@ export interface UserRepositoryPort {
   ): Promise<Result<User, { username?: string; email?: string } | string>>;
   findByUsername(username: string): Promise<User | null>;
   findByEmail(email: string): Promise<User | null>;
+  findById(id: string): Promise<User | null>;
 }
