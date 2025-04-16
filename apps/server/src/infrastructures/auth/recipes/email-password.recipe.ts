@@ -7,6 +7,7 @@ import { UserExistQuery } from '@infrastructures/cqrs/user/queries/user-exist.qu
 import { FindEmailByUsernameQuery } from '@infrastructures/cqrs/user/queries/find-email-by-username.query';
 import { Email } from '@domain/user/email.vo';
 import { Username } from '@domain/user/username.vo';
+import { deleteUser } from 'supertokens-node';
 
 export const emailPasswordRecipe = ({
   commandBus,
@@ -102,11 +103,15 @@ export const emailPasswordRecipe = ({
               ),
             );
             if (!createUserResult.success) {
-              console.log(createUserResult.error);
-              return {
-                status: 'GENERAL_ERROR',
-                message: createUserResult.error,
-              };
+              const deleteUserResult = await deleteUser(
+                responseSignUpPOSTSupertokens.user.id,
+              );
+              if (deleteUserResult.status === 'OK') {
+                return {
+                  status: 'GENERAL_ERROR',
+                  message: createUserResult.error,
+                };
+              }
             }
           }
           return responseSignUpPOSTSupertokens;
