@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ProjectModule } from '@presentation/project/project.module';
 @Module({
-  imports: [ProjectModule],
+  imports: [],
   controllers: [],
   providers: [],
 })
