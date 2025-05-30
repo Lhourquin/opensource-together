@@ -4,29 +4,36 @@
 
 Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant les entités métier et leurs relations selon la méthode MERISE.
 
+## 🎯 Segmentation MVP vs Future
+
+Ce MCD est organisé en deux niveaux de priorité :
+- **🔴 MVP (Minimum Viable Product)** : Entités et relations essentielles pour le lancement
+- **🔵 Future** : Fonctionnalités avancées à implémenter plus tard
+- **🟡 À Discuter** : Points nécessitant une validation équipe avant implémentation
+
 ---
 
 ## 🎯 Entités Principales
 
-### **Entités Centrales**
+### **Entités Centrales (MVP)**
 - **User** : Utilisateurs de la plateforme
 - **Project** : Projets open source
 - **SkillCategory** : Catégories de compétences (Frontend, Backend, Design, Marketing, etc.)
 - **Skill** : Compétences techniques et non-techniques (inclut les TechStacks)
 - **ProjectRole** : Rôles disponibles dans les projets
 
-### **Entités de Liaison**
+### **Entités de Liaison (MVP)**
 - **Application** : Candidatures aux rôles
 - **TeamMember** : Membres actifs des projets
 - **UserSkill** : Compétences des utilisateurs
 - **ProjectRoleSkill** : Compétences requises pour les rôles
 
-### **Entités de Contribution**
+### **Entités de Contribution (MVP)**
 - **GoodFirstIssue** : Issues pour débutants
 - **Contribution** : Contributions réalisées (showcase utilisateur)
 - **IssueSkill** : Compétences requises pour les issues
 
-### **Entités de Support**
+### **Entités de Support (MVP)**
 - **LinkedRepository** : Repositories liés aux projets
 
 ---
@@ -70,6 +77,13 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - **Cardinalité** : `N:M` (via Application)
 - **Contrainte** : Un utilisateur peut postuler à plusieurs rôles, un rôle peut recevoir plusieurs candidatures
 
+**🟡 Point à discuter avec l'équipe :**
+- **`motivation_message`** dans Application :
+  - **Pour** : Améliore la qualité des candidatures, aide le choix des owners
+  - **Contre** : Ajoute de la friction, peut décourager les candidatures spontanées
+  - **Options** : Obligatoire / Optionnel / Configurable par projet owner
+  - **Décision requise** : Validation équipe sur l'approche
+
 **Interrogations produit :**
 - Autoriser les candidatures à plusieurs rôles sur le même projet ?
 - Limiter le nombre de candidatures actives simultanées ?
@@ -90,7 +104,6 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 **Interrogations produit :**
 - Limiter le nombre de projets auxquels un utilisateur peut participer simultanément ?
 - Système de notation/feedback entre membres d'équipe ?
-- Gestion des conflits au sein des équipes ?
 
 **Intérêts business :**
 - 📊 **Collaboration metrics** : Mesurer l'engagement et la rétention
@@ -103,6 +116,7 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - **Relation** : PROPOSE
 - **Cardinalité** : `1:N` (Un projet peut proposer plusieurs rôles)
 - **Contrainte** : Un rôle appartient à exactement un projet
+
 
 **Interrogations produit :**
 - Limiter le nombre de rôles par projet ?
@@ -134,15 +148,10 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - **Cardinalité** : `1:N` (Un projet peut inclure plusieurs repositories)
 - **Contrainte** : Un repository est lié à exactement un projet
 
-**Interrogations produit :**
-- Synchronisation automatique des données GitHub ?
-- Validation de la propriété des repositories ?
-- Gestion des repositories privés vs publics ?
 
 **Intérêts business :**
 - 🔍 **Découverte** : Meilleure visibilité des projets complexes
 - 📊 **Analytics** : Activité des repos, langages utilisés, stars
-- 🚀 **Growth** : Synchronisation automatique des stats pour attirer des contributeurs
 
 #### **Project ↔ Contribution**
 - **Relation** : REÇOIT
@@ -175,9 +184,12 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - **Cohérence du catalogue** : Comment éviter les doublons (React vs React.js) et les compétences non-pertinentes  ? Besoin de guidelines claires et processus de validation
 - **Évolution temporelle** : Les catégories doivent-elles évoluer avec les tendances tech ? (ex: nouvelle catégorie "AI/ML" si beaucoup de compétences IA émergent)
 
+**🔵 Évolutions futures :**
+- Permettre aux users de proposer de nouvelles compétences émergentes
+- Système de validation (équipe OST, votes communautaires, ou utilisateurs "trusted")
 **Intérêts business :**
-- 🗂️ **Organization** : Interface utilisateur plus claire et navigable avec des catégories logiques
-- 📊 **Trends** : Identifier les compétences émergentes par catégorie pour anticiper les besoins du marché
+- 🗂️ **Organization** : Interface utilisateur claire avec catégories logiques
+- 📊 **Trends** : Identifier les compétences émergentes par catégorie
 - 🎯 **Filtering** : Optimiser les recherches et recommandations 
 - 🔍 **Market insights** : Analyser la demande par catégorie pour orienter les stratégies produit
 
@@ -305,9 +317,6 @@ erDiagram
         string name
         string description
         string icon_url
-        string color
-        int sort_order
-        boolean is_active
         datetime created_at
         datetime updated_at
     }
@@ -319,8 +328,6 @@ erDiagram
         string description
         string icon_url
         boolean is_technical
-        int popularity_score
-        boolean is_active
         datetime created_at
         datetime updated_at
     }
@@ -334,7 +341,6 @@ erDiagram
         string time_commitment
         int slots_available
         int slots_filled
-        boolean is_remote_friendly
         string experience_required
         datetime created_at
     }
@@ -344,10 +350,8 @@ erDiagram
         uuid user_id
         uuid skill_id
         string proficiency_level
-        int years_experience
         boolean is_primary
-        int endorsed_count
-        date last_used
+        datetime created_at
     }
 
     PROJECT_ROLE_SKILL {
