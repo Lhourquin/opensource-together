@@ -494,11 +494,10 @@ erDiagram
 ### **Contraintes Métier**
 
 1. **Propriété de projet** : Un utilisateur ne peut pas postuler à un rôle dans son propre projet
-2. **Unicité des membres** : Un utilisateur ne peut occuper qu'un seul rôle par projet
+2. **Unicité des membres** : Un utilisateur ne peut occuper qu'un seul rôle par projet ???
 3. **Slots disponibles** : Le nombre de membres actifs ne peut pas dépasser les slots disponibles
-4. **Assignment d'issues** : Une issue ne peut être assignée qu'à un membre du projet
-5. **Cohérence des contributions** : Une contribution ne peut être liée qu'à une issue du même projet
-6. **Compétences obligatoires** : Un ProjectRole doit avoir au minimum une compétence associée
+4. **Cohérence des contributions** : Une contribution ne peut être liée qu'à une issue du même projet
+5. **Compétences obligatoires** : Un ProjectRole doit avoir au minimum une compétence associée
 
 ### **Contraintes Techniques**
 
@@ -518,47 +517,26 @@ erDiagram
 
 ## 🎯 Points d'Attention pour l'Implémentation
 
-### **Performance**
-- Index sur les FK fréquemment utilisées (user_id, project_id, skill_category_id)
-- Index composé sur (project_id, status) pour les candidatures
-- Index sur contribution_score pour les classements
-- Index sur (skill_category_id, name) pour les recherches de compétences
-
 ### **Évolutivité**
 - Structure extensible pour ajouter de nouvelles catégories de compétences
 - Système de scoring modulaire via contribution_score
 - Support multi-repository via LinkedRepository
-- Matching algorithmique basé sur les compétences (pas de pré-calcul)
+- Matching algorithmique basé sur les compétences 
 
-### **Intégrité**
-- Cascades appropriées pour les suppressions
-- Validation des contraintes métier au niveau application
-- Audit trail via created_at/updated_at
 
 ### **Recommandations Futures**
 - **Algorithme de matching** : Calculé à la volée basé sur UserSkill ↔ ProjectRoleSkill
 - **Personas** : Groupement d'utilisateurs par profils similaires pour optimiser les recommandations
-- **Contribution tracking** : Intégration GitHub optionnelle pour automatiser le scoring
+- **Contribution tracking** : Intégration GitHub pour automatiser le scoring
 
 ---
 
 ## 📝 Changements Majeurs Appliqués
 
-### **✅ Ajouts**
-- **SkillCategory** : Organisation claire des compétences
-- **Contrainte compétences obligatoires** : ProjectRole doit avoir des skills
-
 ### **🔄 Modifications**
 - **Skill élargi** : Inclut maintenant les TechStacks (React, Node.js, etc.) et compétences non-techniques
 - **ProjectRole** : Titre libre + matching via compétences
-- **Contribution simplifiée** : Focus showcase utilisateur, pas d'intégration GitHub complexe
+- **Contribution simplifiée** : Focus showcase utilisateur, pas d'intégration GitHub ?
 
 ### **❌ Suppressions**
-- **ProjectRecommendation** : Remplacé par algorithme à la volée
 - **TechStack** : Fusionné dans Skill
-
----
-
-*Ce MCD révisé offre un équilibre entre simplicité d'implémentation et évolutivité future, en éliminant les complexités prématurées tout en gardant la flexibilité nécessaire.*
-
-*Ce MCD servira de base pour la création du Modèle Logique de Données (MLD) et l'implémentation du schema Prisma.* 
