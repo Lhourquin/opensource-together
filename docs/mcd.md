@@ -4,62 +4,72 @@
 
 Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant les entités métier et leurs relations selon la méthode MERISE.
 
+## Segmentation MVP vs Future
+
+Ce MCD est organisé en deux niveaux de priorité :
+
+- 🔴 MVP (Minimum Viable Product) : Entités et relations estimer essentielles de définir pour le lancement
+- 🔵 Future : Fonctionnalités avancées à implémenter plus tard
+- 🟡 À Discuter : Points nécessitant une validation équipe avant implémentation
+
+Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la pour décider enssemble si c'est pour le MVP ou pour le future
+
 ---
 
 ## 🎯 Entités Principales
 
 ### **Entités Centrales**
 
-- **User** : Utilisateur de la plateforme open source together
-- **Project** : Initiatives open source cherchant des collaborateurs, (et a constuire une communautés ?)
-- **DomainCategory** : Domaine d'application (Education, Santé, Finance, Gaming, DevTools)
-- **ProjectType** : Format technique (Web App, API, CLI Tool, Mobile App, Browser Extension, Bot Discord)
-- **SkillCategory** : Organisation des compétences (Development, Design, Business, Marketing)
-- **Skill** : Domaine de compétence (Frontend Development, UX Design, Product Management, SEO, DevOps)
-- **TechnologyCategory** : Organisation des technologies (Frontend, Backend, Database, DevOps, Design)
-- **Technology** : Outil ou stack technique (React, Python, Figma, Docker, PostgreSQL)
-- **ProjectRole** : Poste ouvert avec responsabilités définies pour un projet
+- **User** : Utilisateur de la plateforme open source together 🔴
+- **Project** : Initiatives open source cherchant des collaborateurs, (et a constuire une communautés ?) 🔴
+- **DomainCategory** : Domaine d'application (Education, Santé, Finance, Gaming, DevTools)🟡🔴
+- **ProjectType** : Format technique (Web App, API, CLI Tool, Mobile App, Browser Extension, Bot Discord) 🟡🔴
+- **Skill** : Domaine de compétence (Frontend Development, UX Design, Product Management, SEO, DevOps)🟡🔴
+- **Technology** : Outil ou stack technique (React, Python, Figma, Docker, PostgreSQL)🔴
+- **ProjectRole** : Poste ouvert avec responsabilités définies pour un projet🔴
 
 ### **Entités de Liaison**
 
-- **Application** : Candidature pour un rôle spécifique d'un poste ouvert d'un projet (ProjectRole)
-- **TeamMember** : Contributeur actif dans un projet
-- **CommunityMember** : Membre de la communauté d'un projet (followers, notifications)
-- **UserSkill** : Maîtrise d'une compétence par un utilisateur
-- **UserTechnology** : Maîtrise d'une technologie par un utilisateur
-- **ProjectDomainCategory** : Domaine d'application d'un projet
-- **ProjectSkill** : Compétence utilisée dans un projet
-- **ProjectTechnology** : Technologie utilisée dans un projet
-- **ProjectRoleSkill** : Compétence requise pour un rôle dans un projet
-- **ProjectRoleTechnology** : Technologie requise pour un rôle dans un projet
+- **Application** : Candidature pour un rôle spécifique d'un poste ouvert d'un projet (ProjectRole)🔴
+- **TeamMember** : Contributeur actif validé par le owner dans un projet🔴
+- **CommunityMember** : Membre de la communauté d'un projet (followers, notifications)🟡🔵
+- **UserSkill** : Maîtrise d'une compétence par un utilisateur🔴
+- **UserTechnology** : Maîtrise d'une technologie par un utilisateur🔴
+- **UserDomainCategory** : Intérêt ou maitrise d'un domaine par un utilisateur ? 🟡🔵
+- **ProjectDomainCategory** : Domaine d'application d'un projet 🟡🔵
+- **ProjectSkill** : Compétence utilisée dans un projet🔴
+- **ProjectTechnology** : Technologie utilisée dans un projet🔴
+- **ProjectRoleSkill** : Compétence requise pour un rôle dans un projet 🟡🔴
+- **ProjectRoleTechnology** : Technologie requise pour un rôle dans un projet 🔴
 
 ### **Entités de Contribution**
 
-- **GoodFirstIssue** : Tâche de qualité adaptée aux nouveaux contributeurs avant de faire partie des teamMembers
-- **Contribution** : Contribution réalisée par un utilisateur, les GFI comme les contributions en tant que teamMember
-- **IssueSkill** : Compétence nécessaire pour une issue d'un projet
-- **IssueTechnology** : Technologie nécessaire pour une issue d'un projet
+- **GoodFirstIssue** : Tâche de qualité adaptée aux nouveaux contributeurs avant de faire partie des teamMembers 🔴
+- **Contribution** : Contribution réalisée par un utilisateur, les GFI comme les contributions en tant que teamMember 🔴
+- **IssueSkill** : Compétence nécessaire pour une issue d'un projet 🟡🔴
+- **IssueTechnology** : Technologie nécessaire pour une issue d'un projet 🔴
 
 ### **Entités de Support**
 
-- **LinkedRepository** : Repository associé à un projet
+- **LinkedRepository** : Repository associé à un projet 🟡🔴
+
 ---
 
 ## 🔗 Relations et Cardinalités
 
 ### **Relations User-centrées**
 
-#### **User ↔ Project**
+#### 🔴 **User ↔ Project**
 
 - **Relation** : POSSÈDE
 - **Cardinalité** : `1:N` (Un utilisateur peut posséder plusieurs projets)
 - **Contrainte** : Un projet a exactement un propriétaire
 
-**Interrogations produit :**
+** 🟡 Interrogations produit :**
 
-- Limiter le nombre de projets qu'un utilisateur peut créer ?
-- Système de validation/modération pour les nouveaux projets ?
-- Gestion des projets abandonnés par leur propriétaire ?
+- 🔴Limiter le nombre de projets qu'un utilisateur peut créer ?
+- 🔵Système de validation/modération pour les nouveaux projets ?
+- 🔵Gestion des projets abandonnés par leur propriétaire ?
 
 **Intérêts business :**
 
@@ -67,17 +77,22 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - 🎯 **Quality control** : Identifier les créateurs de projets de qualité
 - 💼 **User personas** : Distinguer les "créateurs" des "contributeurs"
 
-#### **User ↔ Skill**
+#### 🟡 🔴**User ↔ Skill**
 
 - **Relation** : MAÎTRISE
 - **Cardinalité** : `N:M` (via UserSkill)
-- **Contrainte** : Un utilisateur peut avoir plusieurs compétences, une compétence peut être maîtrisée par plusieurs utilisateurs
+- **Contrainte** : Un utilisateur peut avoir plusieurs compétences métier (SEO, Frontend, Backend), une compétence peut être maîtrisée par plusieurs utilisateurs
 
-**Interrogations produit :**
+**🟡Interrogations produit :**
 
-- **Validation des compétences** : Pour le MVP, auto-déclaration libre par les utilisateurs. Évolutions futures possibles : système d'endorsement communautaire (type LinkedIn) ou validation par quiz/tests
-- **Limitation du nombre de compétences** : Pour le MVP, liberté totale. Évolution future possible : limiter à 10-15 compétences principales pour améliorer la qualité du matching et éviter les profils "touche-à-tout" peu crédibles
-- **Niveaux de compétence** : Faut-il distinguer les compétences principales (expert) des compétences secondaires (apprentissage) pour optimiser l'algorithme de recommandation ?
+- **Validation des compétences** :
+  - 🔴 Pour le MVP, auto-déclaration libre par les utilisateurs.
+  - 🔵 Évolutions futures possibles : système d'endorsement communautaire (type LinkedIn) ou validation par quiz/tests
+- **Limitation du nombre de compétences** :
+  - 🔴 Pour le MVP, liberté totale.
+  - 🔵 Évolution future possible : limiter à 10-15 compétences principales pour améliorer la qualité du matching et éviter les profils "touche-à-tout" peu crédibles
+- **Niveaux de compétence** :
+  - 🔵 Évolution future possible: Faut-il distinguer les compétences principales (expert) des compétences secondaires (apprentissage) pour optimiser l'algorithme de recommandation ?
 
 **Intérêts business :**
 
@@ -85,7 +100,7 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - 📈 **Analytics** : Identifier les compétences les plus demandées
 - 💰 **Recrutement** : Data précieuse pour le futur dashboard recruteur
 
-#### **User ↔ ProjectRole**
+#### 🔴 **User ↔ ProjectRole**
 
 - **Relation** : POSTULE_À
 - **Cardinalité** : `N:M` (via Application)
@@ -93,18 +108,18 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 
 **🟡 Point à discuter avec l'équipe :**
 
-- **`motivation_message`** dans Application :
+- 🔴 ou 🔵 **`motivation_message`** dans Application :
   - **Pour** : Améliore la qualité des candidatures, aide le choix des owners
   - **Contre** : Ajoute de la friction, peut décourager les candidatures spontanées
   - **Options** : Obligatoire / Optionnel / Configurable par projet owner
   - **Décision requise** : Validation équipe sur l'approche
 
-**Interrogations produit :**
+**🟡 Interrogations produit :**
 
-- Autoriser les candidatures à plusieurs rôles sur le même projet ?
-- Limiter le nombre de candidatures actives simultanées ?
-- Comment gérer les profils "en apprentissage" vs "experts" ?
-- Donner aux owners la possibilité de configurer ces permissions ?
+- 🔴 Autoriser les candidatures à plusieurs rôles sur le même projet ?
+- 🔴 Limiter le nombre de candidatures actives simultanées ?
+- 🔵 Comment gérer les profils "en apprentissage" vs "experts" ? (Voir Intérogations produits dans UserSkill )
+- 🔵 Donner aux owners la possibilité de configurer ces permissions ?
 
 **Intérêts business :**
 
@@ -113,16 +128,34 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - 💰 **Business** : Comprendre les patterns de succès
 - 🔍 **User behavior** : Analyser les stratégies de candidature
 
-#### **User ↔ Project (Membership)**
+#### 🔴 **User ↔ Technology**
+
+- **Relation** : MAÎTRISE
+- **Cardinalité** : `N:M` (via UserTechnology)
+- **Contrainte** : Un utilisateur peut maîtriser plusieurs technologies, une technologie peut être maîtrisée par plusieurs utilisateurs
+
+**🟡 Interrogations produit :**
+
+- 🔵 Validation des technologies : Auto-déclaration libre ou système de certification
+- 🔴 Limitation du nombre de technologies par utilisateur
+- 🔵 Niveaux de maîtrise : distinguer expert vs apprentissage
+
+**Intérêts business :**
+
+- 🎯 **Matching** : Algorithme de recommandation technique précis
+- 📈 **Analytics** : Identifier les technologies les plus demandées
+- 💰 **Recrutement** : Data technique pour dashboard recruteur
+
+#### 🔴 **User ↔ Project (Membership)**
 
 - **Relation** : MEMBRE_DE
 - **Cardinalité** : `N:M` (via TeamMember)
 - **Contrainte** : Un utilisateur peut être membre de plusieurs projets, un projet peut avoir plusieurs membres
 
-**Interrogations produit :**
+** 🟡Interrogations produit :**
 
-- Limiter le nombre de projets auxquels un utilisateur peut participer simultanément ?
-- Système de notation/feedback entre membres d'équipe ?
+- 🔴 Limiter le nombre de projets auxquels un utilisateur peut participer simultanément ?
+- 🔵 Système de notation/feedback entre membres d'équipe ?
 
 **Intérêts business :**
 
@@ -130,19 +163,37 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - 🎯 **Team dynamics** : Identifier les bons collaborateurs
 - 💼 **Success patterns** : Comprendre ce qui fait le succès d'une équipe
 
+#### 🔵 **User ↔ Project (Community)**
+
+- **Relation** : SUIT
+- **Cardinalité** : `N:M` (via CommunityMember)
+- **Contrainte** : Un utilisateur peut suivre plusieurs projets, un projet peut avoir plusieurs followers
+
+**🟡Interrogations produit :**
+
+- 🔵 Notifications automatiques pour les followers
+- 🔵 Système de préférences de suivi
+- 🔵 Limiter le nombre de projets suivis
+
+**Intérêts business :**
+
+- 📊 **Engagement** : Mesurer l'intérêt pour les projets
+- 🚀 **Growth** : Identifier les projets à fort potentiel
+- 🔄 **User retention** : Maintenir l'engagement via le suivi
+
 ### **Relations Project-centrées**
 
-#### **Project ↔ ProjectRole**
+#### 🔴 **Project ↔ ProjectRole**
 
 - **Relation** : PROPOSE
 - **Cardinalité** : `1:N` (Un projet peut proposer plusieurs rôles)
 - **Contrainte** : Un rôle appartient à exactement un projet
 
-**Interrogations produit :**
+**🟡 Interrogations produit :**
 
-- Limiter le nombre de rôles par projet ?
-- Templates de rôles prédéfinis ou création libre ?
-- Validation des compétences requises pour chaque rôle ?
+- 🔴 Limiter le nombre de rôles par projet ?
+- 🔴 Templates de rôles prédéfinis ou création libre ?
+- 🔵 Validation des compétences requises pour chaque rôle ?
 
 **Intérêts business :**
 
@@ -150,17 +201,16 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - 🎯 **Matching optimization** : Améliorer la pertinence des recommandations
 - 💡 **Product insights** : Comprendre les besoins récurrents
 
-#### **Project ↔ GoodFirstIssue**
+#### 🔴 **Project ↔ GoodFirstIssue**
 
 - **Relation** : CONTIENT
 - **Cardinalité** : `1:N` (Un projet peut avoir plusieurs issues)
 - **Contrainte** : Une issue appartient à exactement un projet
 
-**Interrogations produit :**
+**🟡 Interrogations produit :**
 
-- Encourager/obliger les projets à créer des Good First Issues ?
-- Système de validation de la qualité des issues ?
-- Récompenses pour les mainteneurs qui créent de bonnes issues ?
+- 🔵 Système de validation de la qualité des issues ?
+- 🔵 Récompenses pour les mainteneurs qui créent de bonnes issues ?
 
 **Intérêts business :**
 
@@ -168,7 +218,7 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - 📊 **Engagement** : Mesurer l'activité et la santé des projets
 - 🎯 **Growth** : Augmenter le nombre de contributions actives
 
-#### **Project ↔ LinkedRepository**
+#### 🔵 **Project ↔ LinkedRepository**
 
 - **Relation** : INCLUT
 - **Cardinalité** : `1:N` (Un projet peut inclure plusieurs repositories)
@@ -179,18 +229,71 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - 🔍 **Découverte** : Meilleure visibilité des projets complexes
 - 📊 **Analytics** : Activité des repos, langages utilisés, stars
 
-#### **Project ↔ Contribution**
+#### 🟡🔴 **Project ↔ DomainCategory**
+
+- **Relation** : APPARTIENT_À
+- **Cardinalité** : `N:M` (via ProjectDomainCategory)
+- **Contrainte** : Un projet peut appartenir à plusieurs domaines, une catégorie peut contenir plusieurs projets
+
+** 🟡 Interrogations produit :**
+
+- 🔵 Limiter le nombre de domaines par projet
+- 🔵 Validation de la cohérence domaine-projet
+- 🔵 Catégories principales vs secondaires
+
+**Intérêts business :**
+
+- 🔍 **Discovery** : Faciliter la recherche par domaine
+- 📊 **Analytics** : Analyser la répartition des projets par secteur
+- 📈 **Market insights** : Identifier les domaines les plus actifs
+
+#### 🔴🟡 **Project ↔ Skill**
+
+- **Relation** : UTILISE
+- **Cardinalité** : `N:M` (via ProjectSkill)
+- **Contrainte** : Un projet utilise plusieurs compétences, une compétence peut être utilisée dans plusieurs projets
+
+**Intérêts business :**
+
+- 🔍 **Discovery** : Recherche de projets par compétence
+- 🎯 **Matching** : Améliorer les recommandations projet-utilisateur
+- 📈 **Project analysis** : Analyser la complexité des projets
+- 📊 **Skill demand** : Mesurer la demande par compétence
+
+#### 🔴 **Project ↔ Technology**
+
+- **Relation** : UTILISE
+- **Cardinalité** : `N:M` (via ProjectTechnology)
+- **Contrainte** : Un projet utilise plusieurs technologies, une technologie peut être utilisée dans plusieurs projets
+
+** 🟡 Interrogations produit :**
+
+- 🔵 Technologies principales vs auxiliaires
+- 🔴 Synchronisation avec les repositories GitHub
+- 🔴 Validation de la cohérence technologique
+
+**Intérêts business :**
+
+- 🔍 **Discovery** : Recherche de projets par stack technique
+- 📊 **Technology trends** : Analyser l'adoption des technologies
+- 🎯 **Matching** : Connecter développeurs et projets compatibles
+
+#### 🔴 **Project ↔ Contribution**
 
 - **Relation** : REÇOIT
 - **Cardinalité** : `1:N` (Un projet peut recevoir plusieurs contributions)
 - **Contrainte** : Une contribution concerne exactement un projet
 
-**Interrogations produit :**
+**🟡 Interrogations produit :**
 
-- **Source des données** : Pour le MVP, analyse interne des contributions (pas de déclaration utilisateur). Évolution future possible : intégration API GitHub pour tracking automatique des PRs/commits
-- **Validation des contributions** : Pas de validation manuelle par les utilisateurs. Les contributions seront analysées et attribuées via des processus internes à OST
-- **Visibilité des données** : Stratégie freemium - Dashboard personnel pour les users (leurs propres stats), données détaillées réservées au futur dashboard recruteur payant
-- **Scope des contributions** : Focus initial sur les contributions code (PRs, commits). Extension future possible vers design, documentation, marketing
+- **Source des données** :
+  - 🔴 Pour le MVP, analyse interne des contributions (pas de déclaration utilisateur).
+  - 🔵 Évolution future possible : intégration API GitHub pour tracking automatique des PRs/commits
+- **Validation des contributions** : 🟡 Pas de validation manuelle par les utilisateurs. Les contributions seront analysées et attribuées via des processus internes à OST
+- **Visibilité des données** :
+  - 🔴 Stratégie freemium - Dashboard personnel pour les users (leurs propres stats),
+  - 🔵 données détaillées réservées au futur dashboard recruteur payant
+- **Scope des contributions** : 🟡 Focus initial sur les contributions code (PRs, commits). Extension future possible vers design, documentation, marketing
 
 **Intérêts business :**
 
@@ -200,66 +303,117 @@ Ce document présente le **Modèle Conceptuel de Données** d'OST, définissant 
 - 📊 **Talent identification** : Identifier les contributeurs de qualité pour le futur produit recrutement
 - 🔒 **Competitive advantage** : Les recruteurs ne peuvent pas accéder gratuitement aux profils détaillés via la plateforme publique
 
-### **Relations Skill-centrées**
+### **Relations Skill-centrées** 🟡🔴
 
-#### **SkillCategory ↔ Skill**
+#### **Skill ↔ User** 🔴
 
-- **Relation** : CATÉGORISE
-- **Cardinalité** : `1:N` (Une catégorie peut contenir plusieurs compétences)
-- **Contrainte** : Une compétence appartient à exactement une catégorie
+- **Relation** : MAÎTRISÉE_PAR
+- **Cardinalité** : `N:M` (via UserSkill)
+- **Contrainte** : Un utilisateur peut maîtriser plusieurs compétences métier, une compétence peut être maîtrisée par plusieurs utilisateurs
 
 **Interrogations produit :**
 
-- **Gestion du catalogue de compétences** : Pour le MVP, liste fermée et complète gérée par OST (React, Vue, Python, Figma, SEO, etc.). Évolution future : permettre aux users de proposer de nouvelles compétences émergentes (ex: nouveau framework comme "Astro")
-- **Ajout de nouvelles compétences** : Si proposition utilisateur activée, qui valide ? Options : validation manuelle par équipe OST, système de votes communautaires, ou réservé aux utilisateurs "trusted"
-- **Cohérence du catalogue** : Comment éviter les doublons (React vs React.js) et les compétences non-pertinentes ? Besoin de guidelines claires et processus de validation
-- **Évolution temporelle** : Les catégories doivent-elles évoluer avec les tendances tech ? (ex: nouvelle catégorie "AI/ML" si beaucoup de compétences IA émergent)
+- **Catalogue des compétences** : 
+    - 🔴 Pour le MVP, liste fermée gérée par OST (Product Management, Marketing, SEO, Community Management, Business Development)
+- **Distinction claire** : 
+    - 🔴 Compétences purement métier/business vs outils techniques (dans Technology)
+- **Validation** :  🔴 Auto-déclaration libre pour le MVP
 
-**🔵 Évolutions futures :**
+**Intérêts business :**
 
-- Permettre aux users de proposer de nouvelles compétences émergentes
-- Système de validation (équipe OST, votes communautaires, ou utilisateurs "trusted")
-  **Intérêts business :**
-- 🗂️ **Organization** : Interface utilisateur claire avec catégories logiques
-- 📊 **Trends** : Identifier les compétences émergentes par catégorie
-- 🎯 **Filtering** : Optimiser les recherches et recommandations
-- 🔍 **Market insights** : Analyser la demande par catégorie pour orienter les stratégies produit
+- 🎯 **Matching métier** : Connecter les profils business aux projets
+- 📊 **Analytics** : Identifier la demande en compétences non-techniques
+- 💼 **Diversité des profils** : Attirer au-delà des développeurs
 
-#### **Skill ↔ ProjectRole**
+### **Relations Technology-centrées** 🔴
 
-- **Relation** : REQUISE_POUR
+#### **Technology ↔ User** 🔴
+
+- **Relation** : MAÎTRISÉE_PAR
+- **Cardinalité** : `N:M` (via UserTechnology)
+- **Contrainte** : Un utilisateur peut maîtriser plusieurs technologies/outils, une technologie peut être maîtrisée par plusieurs utilisateurs
+
+**Interrogations produit :**
+
+- **Catalogue unifié** : 
+    - 🔴 Technologies techniques (React, Python) ET outils métier (Figma, Slack, Notion)
+- **Catégorisation future** : 
+ - 🔵 TechnologyCategory pour organisation (Frontend, Backend, Design Tools, Business Tools)
+- **Validation** : 🔴 Auto-déclaration libre pour le MVP
+
+**Intérêts business :**
+
+- 🎯 **Matching technique** : Connecter les bons outils aux bons profils
+- 📊 **Trends** : Identifier les technologies émergentes
+- 🔍 **Stack analysis** : Comprendre l'écosystème technique des projets
+
+#### **ProjectRole ↔ Skill** 🟡🔴
+
+- **Relation** : REQUIERT
 - **Cardinalité** : `N:M` (via ProjectRoleSkill)
-- **Contrainte** : Un rôle peut requérir plusieurs compétences, une compétence peut être requise pour plusieurs rôles
+- **Contrainte** : Un rôle peut requérir plusieurs compétences métier, une compétence peut être requise pour plusieurs rôles
 
 **Interrogations produit :**
 
-- Définir des niveaux de compétence obligatoires vs optionnels ?
-- Système de suggestion automatique de compétences pour les rôles ?
-- Validation de la cohérence compétences ↔ rôle ?
+- **MVP** : 🔴 Compétences optionnelles pour les rôles
+- **Future** : 🔵 Niveaux de maîtrise requis, validation automatique
 
 **Intérêts business :**
 
-- 🎯 **Core matching** : Algorithme central de recommendation
-- 📈 **Market insights** : Comprendre la demande par compétence
-- 💼 **Skill gaps** : Identifier les compétences rares/demandées
+- 🎯 **Matching métier** : Connecter les bons profils business aux rôles
+- 📈 **Market insights** : Comprendre la demande en compétences métier
+- 💼 **Diversification** : Attirer des profils non-techniques
 
-#### **Skill ↔ GoodFirstIssue**
+#### **ProjectRole ↔ Technology** 🔴
 
-- **Relation** : NÉCESSAIRE_POUR
+- **Relation** : REQUIERT
+- **Cardinalité** : `N:M` (via ProjectRoleTechnology)
+- **Contrainte** : Un rôle peut requérir plusieurs technologies/outils, une technologie peut être requise pour plusieurs rôles
+
+**Interrogations produit :**
+
+- **MVP** : 🔴 Technologies obligatoires vs optionnelles pour chaque rôle
+- **Validation** : 🔵 Cohérence technologie-rôle automatique via ProjectTechnology
+
+**Intérêts business :**
+
+- 🎯 **Core matching** : Algorithme central de recommandation technique
+- 📈 **Technology demand** : Comprendre la demande par technologie/outil
+- 💼 **Stack compatibility** : Identifier les technologies recherchées
+
+#### **GoodFirstIssue ↔ Skill** 🟡🔴
+
+- **Relation** : NÉCESSITE
 - **Cardinalité** : `N:M` (via IssueSkill)
-- **Contrainte** : Une issue peut nécessiter plusieurs compétences, une compétence peut être nécessaire pour plusieurs issues
+- **Contrainte** : Une issue peut nécessiter plusieurs compétences métier, une compétence peut être nécessaire pour plusieurs issues
 
 **Interrogations produit :**
 
-- Suggestion automatique de compétences pour les issues ?
-- Limiter le nombre de compétences par issue ?
-- Prioriser une compétence principale par issue ?
+- **MVP** : 🔴 Optionnel - focus sur les issues techniques d'abord
+- **Future** :🔵  Issues marketing, business development, community management
 
 **Intérêts business :**
 
-- 🎯 **Onboarding optimization** : Diriger les débutants vers les bonnes issues
-- 📊 **Learning paths** : Identifier les progressions de compétences
-- 🚀 **Engagement** : Augmenter le taux de résolution des issues
+- 🎯 **Onboarding diversifié** : Diriger les profils métier vers les bonnes tâches
+- 📊 **Learning paths** : Identifier les progressions de compétences métier
+- 🚀 **Engagement** : Élargir les contributeurs potentiels
+
+#### **GoodFirstIssue ↔ Technology** 🔴
+
+- **Relation** : NÉCESSITE
+- **Cardinalité** : `N:M` (via IssueTechnology)
+- **Contrainte** : Une issue peut nécessiter plusieurs technologies/outils, une technologie peut être nécessaire pour plusieurs issues
+
+**Interrogations produit :**
+
+- **MVP** : 🔴 Technologies principales par issue (max 2-3)
+- **Suggestion automatique** : 🔴 Basée sur ProjectTechnology
+
+**Intérêts business :**
+
+- 🎯 **Onboarding technique** : Diriger les développeurs vers les bonnes technologies
+- 📊 **Learning paths** : Identifier les progressions techniques
+- 🚀 **Engagement** : Améliorer le taux de résolution technique
 
 ### **Relations de Contribution**
 
