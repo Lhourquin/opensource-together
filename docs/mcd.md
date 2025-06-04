@@ -24,8 +24,8 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - **Project** : Initiatives open source cherchant des collaborateurs, (et a constuire une communautés ?) 🔴
 - **DomainCategory** : Domaine d'application (Education, Santé, Finance, Gaming, DevTools)🟡🔴
 - **ProjectType** : Format technique (Web App, API, CLI Tool, Mobile App, Browser Extension, Bot Discord) 🟡🔴
-- **Skill** : Domaine de compétence (Frontend Development, UX Design, Product Management, SEO, DevOps)🟡🔴
-- **Technology** : Outil ou stack technique (React, Python, Figma, Docker, PostgreSQL)🔴
+- **Skill** : Compétences métier pures (Product Management, Marketing, SEO, Community Management, Business Development)🟡🔴
+- **Technology** : Outils techniques ET métier (React, Python, Figma, Slack, Notion, Docker, PostgreSQL)🔴
 - **ProjectRole** : Poste ouvert avec responsabilités définies pour un projet🔴
 
 ### **Entités de Liaison**
@@ -77,11 +77,11 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - 🎯 **Quality control** : Identifier les créateurs de projets de qualité
 - 💼 **User personas** : Distinguer les "créateurs" des "contributeurs"
 
-#### 🟡 🔴**User ↔ Skill**
+#### 🟡🔴 **User ↔ Skill**
 
 - **Relation** : MAÎTRISE
 - **Cardinalité** : `N:M` (via UserSkill)
-- **Contrainte** : Un utilisateur peut avoir plusieurs compétences métier (SEO, Frontend, Backend), une compétence peut être maîtrisée par plusieurs utilisateurs
+- **Contrainte** : Un utilisateur peut maîtriser plusieurs compétences métier pures, une compétence peut être maîtrisée par plusieurs utilisateurs
 
 **🟡Interrogations produit :**
 
@@ -513,7 +513,7 @@ erDiagram
         datetime updated_at
     }
 
-    SKILL_CATEGORY {
+    DOMAIN_CATEGORY {
         uuid id
         string name
         string description
@@ -522,15 +522,84 @@ erDiagram
         datetime updated_at
     }
 
+    PROJECT_TYPE {
+        uuid id
+        string name
+        string description
+        datetime created_at
+        datetime updated_at
+    }
+
     SKILL {
         uuid id
-        uuid skill_category_id
         string name
         string description
         string icon_url
-        boolean is_technical
         datetime created_at
         datetime updated_at
+    }
+
+    TECHNOLOGY {
+        uuid id
+        string name
+        string description
+        string icon_url
+        string category
+        datetime created_at
+        datetime updated_at
+    }
+
+    USER_TECHNOLOGY {
+        uuid id
+        uuid user_id
+        uuid technology_id
+        string proficiency_level
+        boolean is_primary
+        datetime created_at
+    }
+
+    PROJECT_DOMAIN_CATEGORY {
+        uuid id
+        uuid project_id
+        uuid domain_category_id
+        boolean is_primary
+    }
+
+    PROJECT_SKILL {
+        uuid id
+        uuid project_id
+        uuid skill_id
+        boolean is_primary
+    }
+
+    PROJECT_TECHNOLOGY {
+        uuid id
+        uuid project_id
+        uuid technology_id
+        boolean is_primary
+    }
+
+    PROJECT_ROLE_TECHNOLOGY {
+        uuid id
+        uuid project_role_id
+        uuid technology_id
+        string proficiency_level
+        boolean is_required
+    }
+
+    ISSUE_TECHNOLOGY {
+        uuid id
+        uuid issue_id
+        uuid technology_id
+        boolean is_primary
+    }
+
+    COMMUNITY_MEMBER {
+        uuid id
+        uuid user_id
+        uuid project_id
+        datetime followed_at
+        boolean notifications_enabled
     }
 
     PROJECT_ROLE {
@@ -640,29 +709,43 @@ erDiagram
     %% Relations principales
     USER ||--o{ PROJECT : possede
     USER ||--o{ USER_SKILL : maitrise
+    USER ||--o{ USER_TECHNOLOGY : maitrise
     USER ||--o{ APPLICATION : postule
     USER ||--o{ TEAM_MEMBER : membre_de
+    USER ||--o{ COMMUNITY_MEMBER : suit
     USER ||--o{ GOOD_FIRST_ISSUE : cree
     USER ||--o{ CONTRIBUTION : realise
     USER ||--o{ GOOD_FIRST_ISSUE : assigne_a
 
-    SKILL_CATEGORY ||--o{ SKILL : categorise
-
     SKILL ||--o{ USER_SKILL : competence
+    SKILL ||--o{ PROJECT_SKILL : utilisee_par
     SKILL ||--o{ PROJECT_ROLE_SKILL : requise_pour
     SKILL ||--o{ ISSUE_SKILL : necessaire_pour
 
+    TECHNOLOGY ||--o{ USER_TECHNOLOGY : competence
+    TECHNOLOGY ||--o{ PROJECT_TECHNOLOGY : utilisee_par
+    TECHNOLOGY ||--o{ PROJECT_ROLE_TECHNOLOGY : requise_pour
+    TECHNOLOGY ||--o{ ISSUE_TECHNOLOGY : necessaire_pour
+
+    DOMAIN_CATEGORY ||--o{ PROJECT_DOMAIN_CATEGORY : categorise
+
+    PROJECT ||--o{ PROJECT_DOMAIN_CATEGORY : appartient_a
+    PROJECT ||--o{ PROJECT_SKILL : utilise
+    PROJECT ||--o{ PROJECT_TECHNOLOGY : utilise
     PROJECT ||--o{ PROJECT_ROLE : propose
     PROJECT ||--o{ TEAM_MEMBER : equipe
+    PROJECT ||--o{ COMMUNITY_MEMBER : communaute
     PROJECT ||--o{ GOOD_FIRST_ISSUE : contient
     PROJECT ||--o{ CONTRIBUTION : recoit
     PROJECT ||--o{ LINKED_REPOSITORY : inclut
 
     PROJECT_ROLE ||--o{ PROJECT_ROLE_SKILL : competences
+    PROJECT_ROLE ||--o{ PROJECT_ROLE_TECHNOLOGY : technologies
     PROJECT_ROLE ||--o{ APPLICATION : candidatures
     PROJECT_ROLE ||--o{ TEAM_MEMBER : role
 
     GOOD_FIRST_ISSUE ||--o{ ISSUE_SKILL : skills
+    GOOD_FIRST_ISSUE ||--o{ ISSUE_TECHNOLOGY : technologies
     GOOD_FIRST_ISSUE ||--o| CONTRIBUTION : resout
 ```
 
@@ -670,9 +753,9 @@ erDiagram
 
 **Types d'Entités :**
 
-- **Entités Principales** : USER, PROJECT, SKILL_CATEGORY, SKILL, PROJECT_ROLE
-- **Tables de Liaison** : USER_SKILL, PROJECT_ROLE_SKILL, APPLICATION, TEAM_MEMBER
-- **Entités de Contribution** : GOOD_FIRST_ISSUE, ISSUE_SKILL, CONTRIBUTION
+- **Entités Principales** : USER, PROJECT, DOMAIN_CATEGORY, PROJECT_TYPE, SKILL, TECHNOLOGY, PROJECT_ROLE
+- **Tables de Liaison** : USER_SKILL, USER_TECHNOLOGY, PROJECT_DOMAIN_CATEGORY, PROJECT_SKILL, PROJECT_TECHNOLOGY, PROJECT_ROLE_SKILL, PROJECT_ROLE_TECHNOLOGY, APPLICATION, TEAM_MEMBER, COMMUNITY_MEMBER
+- **Entités de Contribution** : GOOD_FIRST_ISSUE, ISSUE_SKILL, ISSUE_TECHNOLOGY, CONTRIBUTION
 - **Entités de Support** : LINKED_REPOSITORY
 
 ### 🔗 Relations Principales
@@ -680,13 +763,20 @@ erDiagram
 | Relation                        | Cardinalité | Description                                    |
 | ------------------------------- | ----------- | ---------------------------------------------- |
 | USER → PROJECT                  | 1:N         | Un utilisateur peut posséder plusieurs projets |
-| USER ↔ SKILL                    | N:M         | Via USER_SKILL - compétences des utilisateurs  |
+| USER ↔ SKILL                    | N:M         | Via USER_SKILL - compétences métier des utilisateurs  |
+| USER ↔ TECHNOLOGY               | N:M         | Via USER_TECHNOLOGY - technologies maîtrisées |
 | USER ↔ PROJECT_ROLE             | N:M         | Via APPLICATION - candidatures aux rôles       |
-| USER ↔ PROJECT                  | N:M         | Via TEAM_MEMBER - participation aux projets    |
-| SKILL_CATEGORY → SKILL          | 1:N         | Catégorisation des compétences                 |
+| USER ↔ PROJECT (TeamMember)     | N:M         | Via TEAM_MEMBER - participation aux projets    |
+| USER ↔ PROJECT (Community)      | N:M         | Via COMMUNITY_MEMBER - suivi des projets      |
+| DOMAIN_CATEGORY ↔ PROJECT       | N:M         | Via PROJECT_DOMAIN_CATEGORY - catégorisation  |
+| PROJECT ↔ SKILL                 | N:M         | Via PROJECT_SKILL - compétences utilisées     |
+| PROJECT ↔ TECHNOLOGY            | N:M         | Via PROJECT_TECHNOLOGY - technologies utilisées |
 | PROJECT → PROJECT_ROLE          | 1:N         | Rôles proposés par projet                      |
-| SKILL ↔ PROJECT_ROLE            | N:M         | Via PROJECT_ROLE_SKILL - compétences requises  |
+| PROJECT_ROLE ↔ SKILL            | N:M         | Via PROJECT_ROLE_SKILL - compétences requises |
+| PROJECT_ROLE ↔ TECHNOLOGY       | N:M         | Via PROJECT_ROLE_TECHNOLOGY - technologies requises |
 | PROJECT → GOOD_FIRST_ISSUE      | 1:N         | Issues pour débutants par projet               |
+| GOOD_FIRST_ISSUE ↔ SKILL        | N:M         | Via ISSUE_SKILL - compétences nécessaires     |
+| GOOD_FIRST_ISSUE ↔ TECHNOLOGY   | N:M         | Via ISSUE_TECHNOLOGY - technologies nécessaires |
 | GOOD_FIRST_ISSUE ↔ CONTRIBUTION | 1:1         | Résolution d'issues                            |
 
 ---
@@ -699,7 +789,7 @@ erDiagram
 2. **Unicité des membres** : Un utilisateur ne peut occuper qu'un seul rôle par projet ???
 3. **Slots disponibles** : Le nombre de membres actifs ne peut pas dépasser les slots disponibles
 4. **Cohérence des contributions** : Une contribution ne peut être liée qu'à une issue du même projet
-5. **Compétences obligatoires** : Un ProjectRole doit avoir au minimum une compétence associée
+5. **Compétences ou technologies obligatoires** : Un ProjectRole doit avoir au minimum une compétence ou technologie associée
 
 ### **Contraintes Techniques**
 
@@ -707,7 +797,7 @@ erDiagram
 2. **Validation des URLs** : Tous les champs URL doivent respecter le format URI
 3. **Cohérence temporelle** : reviewed_at >= applied_at pour les candidatures
 4. **Scores positifs** : contribution_score >= 0
-5. **Catégories requises** : Chaque Skill doit appartenir à une SkillCategory
+5. **Technologies valides** : Chaque Technology doit respecter le catalogue OST
 
 ### **Contraintes de Statut**
 
@@ -721,16 +811,18 @@ erDiagram
 
 ### **Évolutivité**
 
-- Structure extensible pour ajouter de nouvelles catégories de compétences
+- **🔴 MVP** : Structure plate Skills/Technologies pour simplicité
+- **🔵 Future** : Catégorisation TechnologyCategory pour organisation
 - Système de scoring modulaire via contribution_score
 - Support multi-repository via LinkedRepository
-- Matching algorithmique basé sur les compétences
+- Matching algorithmique basé sur Skills ET Technologies
 
 ### **Recommandations Futures**
 
-- **Algorithme de matching** : Calculé à la volée basé sur UserSkill ↔ ProjectRoleSkill
-- **Personas** : Groupement d'utilisateurs par profils similaires pour optimiser les recommandations
+- **Algorithme de matching** : Calculé à la volée basé sur UserSkill + UserTechnology ↔ ProjectRoleSkill + ProjectRoleTechnology
+- **Personas** : Groupement d'utilisateurs par profils similaires (technique vs métier)
 - **Contribution tracking** : Intégration GitHub pour automatiser le scoring
+- **🔵 Catégorisation** : TechnologyCategory pour organiser le catalogue d'outils
 
 ---
 
@@ -738,10 +830,102 @@ erDiagram
 
 ### **🔄 Modifications**
 
-- **Skill élargi** : Inclut maintenant les TechStacks (React, Node.js, etc.) et compétences non-techniques
-- **ProjectRole** : Titre libre + matching via compétences
-- **Contribution simplifiée** : Focus showcase utilisateur, pas d'intégration GitHub ?
+- **Distinction Skill/Technology** : Skills = compétences métier pures, Technology = tous les outils
+- **Nouvelles relations** : User-Technology, Project-Skill, Project-Technology, Project-DomainCategory
+- **Community** : Ajout CommunityMember pour suivi des projets
+- **Diagramme complet** : Toutes les entités et relations MVP intégrées
 
 ### **❌ Suppressions**
 
-- **TechStack** : Fusionné dans Skill
+- **SkillCategory/TechnologyCategory** : Catégorisation reportée en 🔵 Future
+- **Redondances** : Élimination chevauchements Skill/Technology
+
+
+--- 
+
+## 📋 Résumé par Priorité
+
+### 🔴 **MVP - Minimum Viable Product**
+
+**Entités Essentielles :**
+- User, Project, Skill, Technology, ProjectRole
+- Application, TeamMember, UserSkill, UserTechnology
+- ProjectSkill, ProjectTechnology, ProjectRoleTechnology
+- GoodFirstIssue, Contribution, IssueTechnology
+- LinkedRepository
+
+**Relations Critiques :**
+- User ↔ Project (ownership)
+- User ↔ Skill/Technology (compétences)
+- User ↔ ProjectRole (candidatures)
+- User ↔ Project (membership)
+- ProjectRole ↔ Technology (requirements)
+- GoodFirstIssue ↔ Technology (onboarding)
+
+**Questions Abordées :**
+- Catalogue unifié technologies techniques ET métier (c a d définis par nous)?
+- Technologies obligatoires vs optionnelles pour les rôles ?
+- Faut-il limiter les candidatures actives simultanées ?
+- Faut-il limiter la participation simultanée aux projets ?
+- Templates de rôles prédéfinis ou création libre ?
+
+### 🔵 **Future - Fonctionnalités Avancées**
+
+**Entités à Développer :**
+- TechnologyCategory (organisation)
+- CommunityMember (suivi projets)
+- UserDomainCategory, ProjectDomainCategory
+
+**Relations à Implémenter :**
+- User ↔ Project (Community via CommunityMember)
+- Project ↔ DomainCategory
+- GoodFirstIssue ↔ Skill (issues métier)
+
+**Fonctionnalités Identifiées :**
+- Système validation/modération nouveaux projets
+- Gestion projets abandonnés par propriétaire
+- Endorsement communautaire compétences (type LinkedIn)
+- Validation par quiz/tests compétences
+- Limitation 10-15 compétences principales
+- Niveaux compétence : expert vs apprentissage
+- Certification technologies
+- Niveaux maîtrise requis pour rôles
+- Validation automatique cohérence technologie-rôle
+- Issues marketing, business development, community management
+- Notation/feedback entre membres équipe
+- Notifications automatiques followers
+- Système préférences suivi
+- Validation qualité issues
+- Récompenses mainteneurs créant bonnes issues
+- Catégorisation TechnologyCategory
+- Algorithme matching UserSkill + UserTechnology ↔ ProjectRoleSkill + ProjectRoleTechnology
+
+### 🟡 **À Discuter en Équipe**
+
+**🟡🔴 Décisions MVP Critiques :**
+- DomainCategory : Nécessaire pour MVP ou Future ?
+- ProjectType : Format technique obligatoire MVP ?
+- Skill : Compétences métier vraiment nécessaires MVP ?
+- IssueSkill : Focus technique d'abord ou inclure métier ?
+- LinkedRepository : Essentiel MVP ou peut attendre ?
+
+**🟡🔵 Orientations Future :**
+- UserDomainCategory : Intérêt vs maîtrise domaine ?
+- ProjectDomainCategory : Catégories principales vs secondaires ?
+
+**🟡 Décisions Transversales :**
+- motivation_message dans Application : Obligatoire/Optionnel/Configurable ?
+- Autoriser candidatures multiples rôles même projet ?
+- Gestion profils "apprentissage" vs "experts" ?
+- Owners configurent permissions candidatures (souhaite filtrer au max les profils ou non) ?
+- Limiter nombre domaines par projet ?
+- Limitation nombre technologies par utilisateur ?
+- Limitation nombre projets suivis ?
+
+**Questions Produit Majeures :**
+- Cohérence domaine-projet : Validation automatique ?
+- Suggestion automatique compétences pour rôles ?
+- Permettre transfert assignation issues ?
+- Garder contributions scoring interne vs exposition publique ?
+- Validation contributions par mainteneurs ?
+
