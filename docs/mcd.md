@@ -311,13 +311,13 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - **Cardinalité** : `N:M` (via UserSkill)
 - **Contrainte** : Un utilisateur peut maîtriser plusieurs compétences métier, une compétence peut être maîtrisée par plusieurs utilisateurs
 
-**Interrogations produit :**
+**🟡Interrogations produit :**
 
-- **Catalogue des compétences** : 
-    - 🔴 Pour le MVP, liste fermée gérée par OST (Product Management, Marketing, SEO, Community Management, Business Development)
-- **Distinction claire** : 
-    - 🔴 Compétences purement métier/business vs outils techniques (dans Technology)
-- **Validation** :  🔴 Auto-déclaration libre pour le MVP
+- **Catalogue des compétences** :
+  - 🔴 Pour le MVP, liste fermée gérée par OST (Product Management, Marketing, SEO, Community Management, Business Development)
+- **Distinction claire** :
+  - 🔴 Compétences purement métier/business vs outils techniques (dans Technology)
+- **Validation** : 🔴 Auto-déclaration libre pour le MVP
 
 **Intérêts business :**
 
@@ -333,12 +333,12 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - **Cardinalité** : `N:M` (via UserTechnology)
 - **Contrainte** : Un utilisateur peut maîtriser plusieurs technologies/outils, une technologie peut être maîtrisée par plusieurs utilisateurs
 
-**Interrogations produit :**
+**🟡Interrogations produit :**
 
-- **Catalogue unifié** : 
-    - 🔴 Technologies techniques (React, Python) ET outils métier (Figma, Slack, Notion)
-- **Catégorisation future** : 
- - 🔵 TechnologyCategory pour organisation (Frontend, Backend, Design Tools, Business Tools)
+- **Catalogue unifié** :
+  - 🔴 Technologies techniques (React, Python) ET outils métier (Figma, Slack, Notion)
+- **Catégorisation future** :
+- 🔵 TechnologyCategory pour organisation (Frontend, Backend, Design Tools, Business Tools)
 - **Validation** : 🔴 Auto-déclaration libre pour le MVP
 
 **Intérêts business :**
@@ -353,7 +353,7 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - **Cardinalité** : `N:M` (via ProjectRoleSkill)
 - **Contrainte** : Un rôle peut requérir plusieurs compétences métier, une compétence peut être requise pour plusieurs rôles
 
-**Interrogations produit :**
+**🟡Interrogations produit :**
 
 - **MVP** : 🔴 Compétences optionnelles pour les rôles
 - **Future** : 🔵 Niveaux de maîtrise requis, validation automatique
@@ -370,7 +370,7 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - **Cardinalité** : `N:M` (via ProjectRoleTechnology)
 - **Contrainte** : Un rôle peut requérir plusieurs technologies/outils, une technologie peut être requise pour plusieurs rôles
 
-**Interrogations produit :**
+** 🟡Interrogations produit :**
 
 - **MVP** : 🔴 Technologies obligatoires vs optionnelles pour chaque rôle
 - **Validation** : 🔵 Cohérence technologie-rôle automatique via ProjectTechnology
@@ -387,10 +387,10 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - **Cardinalité** : `N:M` (via IssueSkill)
 - **Contrainte** : Une issue peut nécessiter plusieurs compétences métier, une compétence peut être nécessaire pour plusieurs issues
 
-**Interrogations produit :**
+**🟡Interrogations produit :**
 
 - **MVP** : 🔴 Optionnel - focus sur les issues techniques d'abord
-- **Future** :🔵  Issues marketing, business development, community management
+- **Future** :🔵 Issues marketing, business development, community management
 
 **Intérêts business :**
 
@@ -404,7 +404,7 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - **Cardinalité** : `N:M` (via IssueTechnology)
 - **Contrainte** : Une issue peut nécessiter plusieurs technologies/outils, une technologie peut être nécessaire pour plusieurs issues
 
-**Interrogations produit :**
+**🟡Interrogations produit :**
 
 - **MVP** : 🔴 Technologies principales par issue (max 2-3)
 - **Suggestion automatique** : 🔴 Basée sur ProjectTechnology
@@ -417,17 +417,17 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 
 ### **Relations de Contribution**
 
-#### **User ↔ GoodFirstIssue**
+#### 🔴 **User ↔ GoodFirstIssue**
 
 - **Relation** : ASSIGNÉ_À
 - **Cardinalité** : `1:1` (optionnelle)
 - **Contrainte** : Une issue peut être assignée à au maximum un utilisateur
 
-**Interrogations produit :**
+**🟡Interrogations produit :**
 
-- Durée maximale d'assignation avant libération automatique ?
-- Système de réservation temporaire ?
-- Permettre le transfert d'assignation ?
+- 🔴 Durée maximale d'assignation avant libération automatique ?
+- 🔵 Système de réservation temporaire ?
+- 🔴 Permettre le transfert d'assignation ?
 
 **Intérêts business :**
 
@@ -435,17 +435,17 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - 📈 **Completion rate** : Optimiser le taux de résolution
 - 🎯 **User satisfaction** : Éviter les frustrations de double travail
 
-#### **User ↔ Contribution**
+#### 🔴 **User ↔ Contribution**
 
 - **Relation** : RÉALISE
 - **Cardinalité** : `1:N` (Un utilisateur peut réaliser plusieurs contributions)
 - **Contrainte** : Une contribution est réalisée par exactement un utilisateur
 
-**Interrogations produit :**
+**🟡Interrogations produit :**
 
-- Garder les contributions pour scoring interne ou les exposer publiquement ?
-- Validation des contributions par les mainteneurs ?
-- Utiliser ces données pour le futur dashboard recruteur ?
+- 🔴 Garder les contributions pour scoring interne ou les exposer publiquement ?
+- 🔴 Validation des contributions par les mainteneurs ?
+- 🔴 Utiliser ces données pour le futur dashboard recruteur ?
 
 **Intérêts business :**
 
@@ -454,17 +454,15 @@ Dans le cas ou c'est a discuter, les étiquettes 🟡🔴 ou 🟡🔵 sont la po
 - 💰 **Monetization** : Asset data pour futur produit recruteur premium
 - 🎯 **Talent identification** : Identifier les contributeurs de qualité
 
-#### **GoodFirstIssue ↔ Contribution**
+#### 🔴 **GoodFirstIssue ↔ Contribution**
 
 - **Relation** : RÉSOUT
 - **Cardinalité** : `1:1` (optionnelle)
 - **Contrainte** : Une contribution peut résoudre au maximum une issue
 
-**Interrogations produit :**
+**🟡Interrogations produit :**
 
-- Validation automatique de la résolution ou manuelle ?
-- Gestion des contributions partielles ?
-- Système de feedback sur la qualité de la résolution ?
+- 🔴 Système de feedback sur la qualité de la résolution ?
 
 **Intérêts business :**
 
@@ -760,24 +758,24 @@ erDiagram
 
 ### 🔗 Relations Principales
 
-| Relation                        | Cardinalité | Description                                    |
-| ------------------------------- | ----------- | ---------------------------------------------- |
-| USER → PROJECT                  | 1:N         | Un utilisateur peut posséder plusieurs projets |
-| USER ↔ SKILL                    | N:M         | Via USER_SKILL - compétences métier des utilisateurs  |
-| USER ↔ TECHNOLOGY               | N:M         | Via USER_TECHNOLOGY - technologies maîtrisées |
-| USER ↔ PROJECT_ROLE             | N:M         | Via APPLICATION - candidatures aux rôles       |
-| USER ↔ PROJECT (TeamMember)     | N:M         | Via TEAM_MEMBER - participation aux projets    |
-| USER ↔ PROJECT (Community)      | N:M         | Via COMMUNITY_MEMBER - suivi des projets      |
-| DOMAIN_CATEGORY ↔ PROJECT       | N:M         | Via PROJECT_DOMAIN_CATEGORY - catégorisation  |
-| PROJECT ↔ SKILL                 | N:M         | Via PROJECT_SKILL - compétences utilisées     |
-| PROJECT ↔ TECHNOLOGY            | N:M         | Via PROJECT_TECHNOLOGY - technologies utilisées |
-| PROJECT → PROJECT_ROLE          | 1:N         | Rôles proposés par projet                      |
-| PROJECT_ROLE ↔ SKILL            | N:M         | Via PROJECT_ROLE_SKILL - compétences requises |
-| PROJECT_ROLE ↔ TECHNOLOGY       | N:M         | Via PROJECT_ROLE_TECHNOLOGY - technologies requises |
-| PROJECT → GOOD_FIRST_ISSUE      | 1:N         | Issues pour débutants par projet               |
-| GOOD_FIRST_ISSUE ↔ SKILL        | N:M         | Via ISSUE_SKILL - compétences nécessaires     |
-| GOOD_FIRST_ISSUE ↔ TECHNOLOGY   | N:M         | Via ISSUE_TECHNOLOGY - technologies nécessaires |
-| GOOD_FIRST_ISSUE ↔ CONTRIBUTION | 1:1         | Résolution d'issues                            |
+| Relation                        | Cardinalité | Description                                          |
+| ------------------------------- | ----------- | ---------------------------------------------------- |
+| USER → PROJECT                  | 1:N         | Un utilisateur peut posséder plusieurs projets       |
+| USER ↔ SKILL                    | N:M         | Via USER_SKILL - compétences métier des utilisateurs |
+| USER ↔ TECHNOLOGY               | N:M         | Via USER_TECHNOLOGY - technologies maîtrisées        |
+| USER ↔ PROJECT_ROLE             | N:M         | Via APPLICATION - candidatures aux rôles             |
+| USER ↔ PROJECT (TeamMember)     | N:M         | Via TEAM_MEMBER - participation aux projets          |
+| USER ↔ PROJECT (Community)      | N:M         | Via COMMUNITY_MEMBER - suivi des projets             |
+| DOMAIN_CATEGORY ↔ PROJECT       | N:M         | Via PROJECT_DOMAIN_CATEGORY - catégorisation         |
+| PROJECT ↔ SKILL                 | N:M         | Via PROJECT_SKILL - compétences utilisées            |
+| PROJECT ↔ TECHNOLOGY            | N:M         | Via PROJECT_TECHNOLOGY - technologies utilisées      |
+| PROJECT → PROJECT_ROLE          | 1:N         | Rôles proposés par projet                            |
+| PROJECT_ROLE ↔ SKILL            | N:M         | Via PROJECT_ROLE_SKILL - compétences requises        |
+| PROJECT_ROLE ↔ TECHNOLOGY       | N:M         | Via PROJECT_ROLE_TECHNOLOGY - technologies requises  |
+| PROJECT → GOOD_FIRST_ISSUE      | 1:N         | Issues pour débutants par projet                     |
+| GOOD_FIRST_ISSUE ↔ SKILL        | N:M         | Via ISSUE_SKILL - compétences nécessaires            |
+| GOOD_FIRST_ISSUE ↔ TECHNOLOGY   | N:M         | Via ISSUE_TECHNOLOGY - technologies nécessaires      |
+| GOOD_FIRST_ISSUE ↔ CONTRIBUTION | 1:1         | Résolution d'issues                                  |
 
 ---
 
@@ -840,14 +838,14 @@ erDiagram
 - **SkillCategory/TechnologyCategory** : Catégorisation reportée en 🔵 Future
 - **Redondances** : Élimination chevauchements Skill/Technology
 
-
---- 
+---
 
 ## 📋 Résumé par Priorité
 
 ### 🔴 **MVP - Minimum Viable Product**
 
 **Entités Essentielles :**
+
 - User, Project, Skill, Technology, ProjectRole
 - Application, TeamMember, UserSkill, UserTechnology
 - ProjectSkill, ProjectTechnology, ProjectRoleTechnology
@@ -855,6 +853,7 @@ erDiagram
 - LinkedRepository
 
 **Relations Critiques :**
+
 - User ↔ Project (ownership)
 - User ↔ Skill/Technology (compétences)
 - User ↔ ProjectRole (candidatures)
@@ -863,6 +862,7 @@ erDiagram
 - GoodFirstIssue ↔ Technology (onboarding)
 
 **Questions Abordées :**
+
 - Catalogue unifié technologies techniques ET métier (c a d définis par nous)?
 - Technologies obligatoires vs optionnelles pour les rôles ?
 - Faut-il limiter les candidatures actives simultanées ?
@@ -872,16 +872,19 @@ erDiagram
 ### 🔵 **Future - Fonctionnalités Avancées**
 
 **Entités à Développer :**
+
 - TechnologyCategory (organisation)
 - CommunityMember (suivi projets)
 - UserDomainCategory, ProjectDomainCategory
 
 **Relations à Implémenter :**
+
 - User ↔ Project (Community via CommunityMember)
 - Project ↔ DomainCategory
 - GoodFirstIssue ↔ Skill (issues métier)
 
 **Fonctionnalités Identifiées :**
+
 - Système validation/modération nouveaux projets
 - Gestion projets abandonnés par propriétaire
 - Endorsement communautaire compétences (type LinkedIn)
@@ -903,6 +906,7 @@ erDiagram
 ### 🟡 **À Discuter en Équipe**
 
 **🟡🔴 Décisions MVP Critiques :**
+
 - DomainCategory : Nécessaire pour MVP ou Future ?
 - ProjectType : Format technique obligatoire MVP ?
 - Skill : Compétences métier vraiment nécessaires MVP ?
@@ -910,22 +914,23 @@ erDiagram
 - LinkedRepository : Essentiel MVP ou peut attendre ?
 
 **🟡🔵 Orientations Future :**
+
 - UserDomainCategory : Intérêt vs maîtrise domaine ?
 - ProjectDomainCategory : Catégories principales vs secondaires ?
 
 **🟡 Décisions Transversales :**
-- motivation_message dans Application : Obligatoire/Optionnel/Configurable ?
-- Autoriser candidatures multiples rôles même projet ?
-- Gestion profils "apprentissage" vs "experts" ?
-- Owners configurent permissions candidatures (souhaite filtrer au max les profils ou non) ?
-- Limiter nombre domaines par projet ?
-- Limitation nombre technologies par utilisateur ?
-- Limitation nombre projets suivis ?
+
+- 🔵 motivation_message dans Application : Obligatoire/Optionnel/Configurable ?
+- 🔴 Autoriser candidatures multiples rôles même projet ?
+- 🔵 Gestion profils "apprentissage" vs "experts" ?
+- 🔵 Owners configurent permissions candidatures (souhaite filtrer au max les profils ou non) ?
+- 🔵 Limiter nombre domaines par projet ?
+- 🔴 Limitation nombre technologies par utilisateur ?
+- 🔵 Limitation nombre projets suivis ?
 
 **Questions Produit Majeures :**
-- Cohérence domaine-projet : Validation automatique ?
-- Suggestion automatique compétences pour rôles ?
-- Permettre transfert assignation issues ?
-- Garder contributions scoring interne vs exposition publique ?
-- Validation contributions par mainteneurs ?
 
+- 🔴 Cohérence domaine-projet : Validation automatique ?
+- 🔴 Permettre transfert assignation issues ?
+- 🔴 Garder contributions scoring interne vs exposition publique ?
+- 🔴 Validation contributions par mainteneurs ?
